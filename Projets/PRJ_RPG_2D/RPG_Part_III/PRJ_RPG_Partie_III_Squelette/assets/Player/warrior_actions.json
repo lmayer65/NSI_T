@@ -1,0 +1,72 @@
+{   
+	"attack_0" :
+	{
+		"Attack" : 5,
+		"Critical" : 0.90,
+		"Cooldown" : 1,
+		"Cost" : 0,
+		"Hit" : 15,
+		"Level" : 1,
+		"Miss" : 0.2,
+		"Name" : "Assault",
+		"Range_Min" : 0,
+		"Range_Max" : 40,
+		"Repeat" : 1,
+		"Type" : "Sword"
+		
+	},
+	
+	"attack_1" :
+   {
+	    "Attack" : 15,
+		"Critical" : 0.25,
+		"Cooldown" : 3,
+		"Cost" : 0,
+		"Hit" : 30,
+		"Level" : 1,
+		"Miss" : 0.1,
+		"Name" : "Ogre'Revenge",
+		"Range_Min" : 0,
+		"Range_Max" : 40,
+		"Repeat" : 1,
+		"Type" : "Hammer"
+		 
+   },
+   
+   "attack_2" :
+   {
+	    "Attack" : 10,
+		"Critical" : 0.10,
+		"Cooldown" : 3,
+		"Cost" : 0,
+		"Hit" : 18,
+		"Level" : 1,
+		"Miss" : 0.15,
+		"Name" : "Swinging Blade",
+		"Range_Min" : 0,
+		"Range_Max" : 40,
+		"Repeat" : 2,
+		"Type" : "Sword"		
+   }, 
+   
+   "attack_3" :
+   {
+	    "Attack" : 20,
+		"Critical" : 0.25,
+		"Cooldown" : 6, 
+		"Cost" : 0,
+		"Hit" : 18,
+		"Level" : 2,
+		"Miss" : 0.10,
+		"Name" : "Precise Shoot",
+		"Range_Min" : 50,
+		"Range_Max" : 400,
+		"Repeat" : 1,
+		"Type" : "Bow"
+   }
+}
+   
+   
+	
+	
+		

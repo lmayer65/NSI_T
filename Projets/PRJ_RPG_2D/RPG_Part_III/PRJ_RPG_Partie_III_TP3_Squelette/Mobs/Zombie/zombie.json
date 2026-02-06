@@ -1,0 +1,21 @@
+{ "Zombie" : 
+	{
+	"Attack" : 10,
+	"Block" : 0.05,
+	"Cooldown" : 3,
+	"Critical" : 0.05,
+	"Defense" : 20,
+	"Dodge" : 0.05,
+	"Experience" : 20,
+	"Hit" : 10,
+	"HitPoints" : 20,
+	"Init_x" : 1200,
+	"Init_y" : 110,
+	"Name" : "Zombie",
+	"Parry" : 0.10,
+	"Range_Min" : 0,
+	"Range_Max" : 30,
+	"Speed" : 0.5,
+	"Type" : "Monster"
+	}
+}
