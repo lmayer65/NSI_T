@@ -1,0 +1,14 @@
+{ "Player" : 
+	{
+	"Attack" : 30,
+	"Block" : 0.10,
+	"Defense" : 20,
+	"Dodge" : 0.05,
+	"HitPoints" : 40,
+	"Init_x" : 1200,
+	"Init_y" : 110,
+	"Name" : "Kang",
+	"Parry" : 0.15,
+	"Speed" : 3
+	}
+}
