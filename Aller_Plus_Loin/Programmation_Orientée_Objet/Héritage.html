@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Python - Héritage et polymorphisme</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #f7f9fc;
+            color: #222;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 35px;
+            border-bottom: 2px solid #555;
+            padding-bottom: 6px;
+        }
+
+        h3 {
+            margin-top: 25px;
+        }
+
+        .intro, .resume, .exercice {
+            padding: 18px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .intro {
+            background: #eef3f8;
+        }
+
+        .resume {
+            background: #f1f7ed;
+        }
+
+        .exercice {
+            background: #fff4e6;
+            border-left: 6px solid #d88900;
+        }
+
+        code {
+            font-family: Consolas, Monaco, monospace;
+        }
+
+        pre {
+            background: #1f2329;
+            color: #f6f8fa;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .inline-code {
+            font-family: Consolas, Monaco, monospace;
+            background: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+        }
+
+        .important {
+            font-weight: bold;
+        }
+
+        .output {
+            background: #f4f4f4;
+            border-left: 4px solid #777;
+            padding: 12px 16px;
+            font-family: Consolas, Monaco, monospace;
+            white-space: pre-wrap;
+            margin: 12px 0 20px 0;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🐍 Cours Python — Héritage et polymorphisme</h1>
+
+    <div class="intro">
+        <p>
+            L'héritage est un mécanisme de la programmation orientée objet qui permet de créer
+            une nouvelle classe à partir d'une classe existante.
+        </p>
+        <p>
+            Il permet de <strong>réutiliser du code</strong>, d'ajouter de nouvelles fonctionnalités
+            et de spécialiser le comportement d'une classe.
+        </p>
+    </div>
+
+    <h2>1. Principe de l'héritage</h2>
+
+    <h3>1.1. Classe mère et classe fille</h3>
+
+    <p>
+        La classe existante est appelée <strong>classe mère</strong> ou <strong>classe parente</strong>.
+        La nouvelle classe est appelée <strong>classe fille</strong>.
+    </p>
+
+    <p>
+        Une classe fille hérite des attributs et des méthodes de sa classe mère.
+    </p>
+
+    <h3>1.2. Exemple : une classe Personnage</h3>
+
+    <pre><code>class Personnage:
+    def __init__(self, nom, vie, force):
+        self.nom = nom
+        self.vie = vie
+        self.force = force
+
+    def attaquer(self):
+        print(self.nom, "attaque avec une arme.")</code></pre>
+
+    <p>On crée maintenant un type particulier de personnage : un guerrier.</p>
+
+    <pre><code>class Guerrier(Personnage):
+    pass</code></pre>
+
+    <p>
+        La syntaxe <span class="inline-code">class Guerrier(Personnage):</span> indique que
+        <strong>Guerrier hérite de Personnage</strong>.
+    </p>
+
+    <pre><code>g = Guerrier("Conan", 100, 15)
+
+print(g.nom)
+print(g.vie)
+g.attaquer()</code></pre>
+
+    <div class="output">Conan
+100
+Conan attaque avec une arme.</div>
+
+    <p>
+        Même si la classe <span class="inline-code">Guerrier</span> est vide, elle possède les
+        attributs et les méthodes hérités de <span class="inline-code">Personnage</span>.
+    </p>
+
+    <h2>2. Ajouter des attributs dans une classe fille</h2>
+
+    <h3>2.1. Utiliser super()</h3>
+
+    <p>
+        Une classe fille peut posséder des attributs supplémentaires.
+        Par exemple, un guerrier peut avoir un attribut <span class="inline-code">armure</span>.
+    </p>
+
+    <pre><code>class Guerrier(Personnage):
+    def __init__(self, nom, vie, force, armure):
+        super().__init__(nom, vie, force)
+        self.armure = armure</code></pre>
+
+    <p>
+        L'instruction :
+    </p>
+
+    <pre><code>super().__init__(nom, vie, force)</code></pre>
+
+    <p>
+        appelle le constructeur de la classe mère <span class="inline-code">Personnage</span>.
+        Elle initialise donc les attributs :
+    </p>
+
+    <ul>
+        <li><span class="inline-code">self.nom</span></li>
+        <li><span class="inline-code">self.vie</span></li>
+        <li><span class="inline-code">self.force</span></li>
+    </ul>
+
+    <p>
+        Puis l'instruction suivante ajoute l'attribut spécifique au guerrier :
+    </p>
+
+    <pre><code>self.armure = armure</code></pre>
+
+    <h3>2.2. Exemple</h3>
+
+    <pre><code>g = Guerrier("Conan", 100, 15, 20)
+
+print(g.nom)
+print(g.vie)
+print(g.force)
+print(g.armure)</code></pre>
+
+    <h2>3. Redéfinir une méthode</h2>
+
+    <h3>3.1. Principe</h3>
+
+    <p>
+        Une classe fille peut <strong>redéfinir</strong> une méthode héritée de sa classe mère.
+    </p>
+
+    <p>
+        Par exemple, l'attaque d'un guerrier peut être différente de celle d'un personnage ordinaire.
+    </p>
+
+    <pre><code>class Guerrier(Personnage):
+    def __init__(self, nom, vie, force, armure):
+        super().__init__(nom, vie, force)
+        self.armure = armure
+
+    def attaquer(self):
+        print(self.nom, "frappe avec son épée.")</code></pre>
+
+    <p>
+        La méthode <span class="inline-code">attaquer()</span> existait déjà dans la classe
+        <span class="inline-code">Personnage</span>. Elle est ici redéfinie dans
+        <span class="inline-code">Guerrier</span>.
+    </p>
+
+    <pre><code>p = Personnage("Bob", 80, 10)
+g = Guerrier("Conan", 100, 15, 20)
+
+p.attaquer()
+g.attaquer()</code></pre>
+
+    <div class="output">Bob attaque avec une arme.
+Conan frappe avec son épée.</div>
+
+    <h2>4. Le polymorphisme</h2>
+
+    <h3>4.1. Une même méthode, plusieurs comportements</h3>
+
+    <p>
+        Le <strong>polymorphisme</strong> signifie qu'une même méthode peut produire des
+        comportements différents selon la classe de l'objet.
+    </p>
+
+    <pre><code>personnages = [
+    Personnage("Bob", 80, 10),
+    Guerrier("Conan", 100, 15, 20)
+]
+
+for personnage in personnages:
+    personnage.attaquer()</code></pre>
+
+    <div class="output">Bob attaque avec une arme.
+Conan frappe avec son épée.</div>
+
+    <p>
+        Python choisit automatiquement la version de la méthode
+        <span class="inline-code">attaquer()</span> correspondant à la classe réelle de l'objet.
+    </p>
+
+    <div class="resume">
+        <strong>Résumé :</strong>
+        <ul>
+            <li>une classe fille hérite des attributs et méthodes de sa classe mère ;</li>
+            <li><span class="inline-code">super()</span> permet d'appeler le constructeur de la classe mère ;</li>
+            <li>une méthode héritée peut être redéfinie dans une classe fille ;</li>
+            <li>le polymorphisme permet d'utiliser le même appel de méthode avec des comportements différents.</li>
+        </ul>
+    </div>
+
+    <h2>5. Exercice — Créer une classe Archer</h2>
+
+    <div class="exercice">
+
+        <p>On dispose des classes suivantes :</p>
+
+        <pre><code>class Personnage:
+    def __init__(self, nom, vie, force):
+        self.nom = nom
+        self.vie = vie
+        self.force = force
+
+    def attaquer(self):
+        print(self.nom, "attaque avec une arme.")
+
+
+class Guerrier(Personnage):
+    def __init__(self, nom, vie, force, armure):
+        super().__init__(nom, vie, force)
+        self.armure = armure
+
+    def attaquer(self):
+        print(self.nom, "frappe avec son épée.")</code></pre>
+
+        <p><strong>Travail demandé :</strong></p>
+
+        <ol>
+            <li>Créer une classe <span class="inline-code">Archer</span> qui hérite de <span class="inline-code">Personnage</span>.</li>
+            <li>Ajouter à cette classe un attribut <span class="inline-code">dexterite</span>.</li>
+            <li>Utiliser <span class="inline-code">super()</span> pour initialiser les attributs hérités de <span class="inline-code">Personnage</span>.</li>
+            <li>Redéfinir la méthode <span class="inline-code">attaquer()</span> afin qu'elle affiche : <strong>« Legolas tire une flèche. »</strong></li>
+        </ol>
+
+        <p>On devra pouvoir créer un archer avec :</p>
+
+        <pre><code>a = Archer("Legolas", 80, 10, 18)</code></pre>
+
+        <p>Puis vérifier son comportement avec :</p>
+
+        <pre><code>print(a.nom)
+print(a.vie)
+print(a.force)
+print(a.dexterite)
+
+a.attaquer()</code></pre>
+
+        <h3>Pour terminer : mettre en évidence le polymorphisme</h3>
+
+        <pre><code>p = Personnage("Bob", 80, 10)
+g = Guerrier("Conan", 100, 15, 20)
+a = Archer("Legolas", 80, 10, 18)
+
+personnages = [p, g, a]
+
+for personnage in personnages:
+    personnage.attaquer()</code></pre>
+
+        <p>
+            Expliquer pourquoi l'instruction :
+        </p>
+
+        <pre><code>personnage.attaquer()</code></pre>
+
+        <p>
+            est toujours la même alors que trois comportements différents sont obtenus.
+        </p>
+
+    </div>
+
+    <footer>
+        Spécialité NSI — Terminale — Programmation orientée objet en Python
+    </footer>
+
+</body>
+</html>

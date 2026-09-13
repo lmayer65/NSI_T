@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design patterns et héritage en Python</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;line-height:1.6;max-width:1000px;margin:auto;padding:30px;background:#f7f9fc;color:#222}
+h1{text-align:center}
+h2{margin-top:35px;border-bottom:2px solid #555;padding-bottom:6px}
+h3{margin-top:25px}
+pre{background:#1f2329;color:#f6f8fa;padding:16px;border-radius:8px;overflow-x:auto}
+code{font-family:Consolas,Monaco,monospace}
+.note,.resume{padding:16px;border-radius:10px;margin:20px 0}
+.note{background:#eef3f8}
+.resume{background:#eef7ee}
+.output{background:#f4f4f4;border-left:4px solid #777;padding:12px 16px;font-family:Consolas,monospace;white-space:pre-wrap}
+footer{margin-top:40px;text-align:center;color:#666}
+</style>
+</head>
+<body>
+<h1>🐍 Design patterns et héritage en Python</h1>
+
+<div class="note">
+<p>Un <strong>design pattern</strong> est une solution générale et réutilisable à un problème classique de conception logicielle.</p>
+<p>Les exemples suivants montrent comment l'héritage et le polymorphisme peuvent être utilisés pour organiser un programme Python.</p>
+</div>
+
+<h2>1. Le pattern Composite</h2>
+<h3>1.1. Principe</h3>
+<p>Le pattern <strong>Composite</strong> permet de manipuler de la même manière un objet simple et un ensemble d'objets.</p>
+<p>Il est particulièrement adapté aux structures en arbre, par exemple un système de fichiers composé de fichiers et de dossiers.</p>
+
+<pre><code>class Element:
+    def __init__(self, nom):
+        self.nom = nom
+
+    def afficher(self):
+        pass</code></pre>
+
+<p>La classe mère possède un constructeur qui initialise l'attribut commun <code>nom</code>.</p>
+<p>Les classes filles utilisent ensuite <code>super().__init__(nom)</code> pour appeler ce constructeur.</p>
+<p>Deux classes filles héritent de <code>Element</code>.</p>
+
+<pre><code>class Fichier(Element):
+    def __init__(self, nom):
+        super().__init__(nom)
+
+    def afficher(self):
+        print("Fichier :", self.nom)
+
+
+class Dossier(Element):
+    def __init__(self, nom):
+        super().__init__(nom)
+        self.contenu = []
+
+    def ajouter(self, element):
+        self.contenu.append(element)
+
+    def afficher(self):
+        print("Dossier :", self.nom)
+
+        for element in self.contenu:
+            element.afficher()</code></pre>
+
+<p>Utilisation :</p>
+
+<pre><code>f1 = Fichier("cours.pdf")
+f2 = Fichier("programme.py")
+
+dossier = Dossier("NSI")
+dossier.ajouter(f1)
+dossier.ajouter(f2)
+
+dossier.afficher()</code></pre>
+
+<div class="output">Dossier : NSI
+Fichier : cours.pdf
+Fichier : programme.py</div>
+
+<p>Un dossier peut lui-même contenir un autre dossier :</p>
+
+<pre><code>images = Dossier("Images")
+images.ajouter(Fichier("schema.png"))
+
+dossier.ajouter(images)
+dossier.afficher()</code></pre>
+
+<p>Le même appel <code>element.afficher()</code> fonctionne pour un fichier comme pour un dossier : c'est du <strong>polymorphisme</strong>.</p>
+
+<h2>2. Le pattern Strategy</h2>
+<h3>2.1. Principe</h3>
+<p>Le pattern <strong>Strategy</strong> permet de séparer un comportement de la classe principale afin de pouvoir le remplacer facilement.</p>
+
+<pre><code>class StrategieAttaque:
+    def attaquer(self):
+        pass
+
+
+class AttaqueEpee(StrategieAttaque):
+    def attaquer(self):
+        print("Frappe avec une épée")
+
+
+class AttaqueArc(StrategieAttaque):
+    def attaquer(self):
+        print("Tire une flèche")</code></pre>
+
+<pre><code>class Personnage:
+    def __init__(self, nom, strategie):
+        self.nom = nom
+        self.strategie = strategie
+
+    def attaquer(self):
+        print(self.nom, ":", end=" ")
+        self.strategie.attaquer()</code></pre>
+
+<pre><code>guerrier = Personnage("Conan", AttaqueEpee())
+archer = Personnage("Legolas", AttaqueArc())
+
+guerrier.attaquer()
+archer.attaquer()</code></pre>
+
+<div class="output">Conan : Frappe avec une épée
+Legolas : Tire une flèche</div>
+
+<p>On peut même changer de stratégie pendant l'exécution :</p>
+
+<pre><code>guerrier.strategie = AttaqueArc()
+guerrier.attaquer()</code></pre>
+
+<h2>3. Le pattern Template Method</h2>
+<h3>3.1. Principe</h3>
+<p>Le pattern <strong>Template Method</strong> définit les grandes étapes d'un algorithme dans la classe mère, puis laisse les classes filles redéfinir certaines étapes.</p>
+
+<pre><code>class Personnage:
+    def jouer_tour(self):
+        self.se_deplacer()
+        self.attaquer()
+
+    def se_deplacer(self):
+        print("Le personnage se déplace")
+
+    def attaquer(self):
+        pass</code></pre>
+
+<pre><code>class Guerrier(Personnage):
+    def attaquer(self):
+        print("Le guerrier frappe avec son épée")
+
+
+class Archer(Personnage):
+    def attaquer(self):
+        print("L'archer tire une flèche")</code></pre>
+
+<pre><code>g = Guerrier()
+a = Archer()
+
+g.jouer_tour()
+a.jouer_tour()</code></pre>
+
+<p>La structure générale de l'action reste la même, mais chaque classe fille peut définir sa propre attaque.</p>
+
+<h2>4. Le pattern Factory Method</h2>
+<h3>4.1. Principe</h3>
+<p>Une fabrique permet de centraliser la création d'objets.</p>
+
+<pre><code>class Personnage:
+    def attaquer(self):
+        pass
+
+
+class Guerrier(Personnage):
+    def attaquer(self):
+        print("Frappe avec une épée")
+
+
+class Archer(Personnage):
+    def attaquer(self):
+        print("Tire une flèche")</code></pre>
+
+<pre><code>def creer_personnage(type_personnage):
+    if type_personnage == "guerrier":
+        return Guerrier()
+
+    if type_personnage == "archer":
+        return Archer()</code></pre>
+
+<pre><code>p = creer_personnage("archer")
+p.attaquer()</code></pre>
+
+<div class="output">Tire une flèche</div>
+
+<div class="resume">
+<strong>Résumé</strong>
+<ul>
+<li><strong>Composite</strong> : manipuler uniformément des objets simples et des groupes d'objets.</li>
+<li><strong>Strategy</strong> : remplacer facilement un comportement par un autre.</li>
+<li><strong>Template Method</strong> : fixer la structure d'un algorithme et laisser certaines étapes aux classes filles.</li>
+<li><strong>Factory Method</strong> : centraliser la création des objets.</li>
+</ul>
+</div>
+
+<footer>Spécialité NSI — Terminale — Programmation orientée objet en Python</footer>
+</body>
+</html>

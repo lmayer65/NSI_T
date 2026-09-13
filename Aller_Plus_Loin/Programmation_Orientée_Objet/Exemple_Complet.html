@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercice Composite - Système de fichiers</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;line-height:1.6;max-width:1000px;margin:auto;padding:30px;background:#f7f9fc;color:#222}
+h1{text-align:center}
+h2{margin-top:35px;border-bottom:2px solid #555;padding-bottom:6px}
+h3{margin-top:25px}
+pre{background:#1f2329;color:#f6f8fa;padding:16px;border-radius:8px;overflow-x:auto}
+code{font-family:Consolas,Monaco,monospace}
+.exercice,.corrige,.objectif{padding:18px;border-radius:10px;margin:20px 0}
+.objectif{background:#eef3f8}
+.exercice{background:#fff4e6;border-left:6px solid #d88900}
+.corrige{background:#eef7ee;border-left:6px solid #4c8b4c}
+.output{background:#f4f4f4;border-left:4px solid #777;padding:12px 16px;font-family:Consolas,monospace;white-space:pre-wrap}
+footer{margin-top:40px;text-align:center;color:#666}
+</style>
+</head>
+<body>
+
+<h1>🌳 Exercice — Design pattern Composite</h1>
+
+<div class="objectif">
+<p><strong>Objectifs :</strong> utiliser l'héritage, le polymorphisme et une structure récursive pour représenter un système de fichiers.</p>
+</div>
+
+<h2>1. Situation</h2>
+
+<p>On souhaite représenter l'arborescence suivante :</p>
+
+<pre><code>NSI
+├── cours.pdf
+├── programme.py
+└── Images
+    ├── arbre.png
+    └── graphe.png</code></pre>
+
+<div class="exercice">
+<h2>2. Travail demandé</h2>
+
+<h3>2.1. Classe mère</h3>
+<p>Créer une classe <code>Element</code> contenant une méthode <code>afficher()</code>.</p>
+
+<h3>2.2. Classe Fichier</h3>
+<p>Créer une classe <code>Fichier</code> qui hérite de <code>Element</code>.</p>
+<ul>
+<li>Son constructeur reçoit le nom du fichier.</li>
+<li>La méthode <code>afficher()</code> affiche le nom du fichier précédé de <code>Fichier :</code>.</li>
+</ul>
+
+<h3>2.3. Classe Dossier</h3>
+<p>Créer une classe <code>Dossier</code> qui hérite également de <code>Element</code>.</p>
+<ul>
+<li>Son constructeur reçoit le nom du dossier.</li>
+<li>Chaque dossier possède une liste <code>contenu</code>, initialement vide.</li>
+<li>Créer une méthode <code>ajouter(element)</code> permettant d'ajouter un fichier ou un dossier.</li>
+<li>Redéfinir <code>afficher()</code> afin d'afficher le nom du dossier puis chacun des éléments qu'il contient.</li>
+</ul>
+
+<h3>2.4. Construction de l'arborescence</h3>
+<p>Créer les objets nécessaires pour obtenir :</p>
+
+<pre><code>NSI
+├── cours.pdf
+├── programme.py
+└── Images
+    ├── arbre.png
+    └── graphe.png</code></pre>
+
+<h3>2.5. Question</h3>
+<p>Expliquer pourquoi la ligne suivante peut fonctionner aussi bien pour un objet <code>Fichier</code> que pour un objet <code>Dossier</code> :</p>
+
+<pre><code>element.afficher()</code></pre>
+
+<p>Quel concept de programmation orientée objet est utilisé ici ?</p>
+</div>
+
+<h2>3. Corrigé</h2>
+
+<div class="corrige">
+
+<h3>3.1. Classe mère</h3>
+
+<pre><code>class Element:
+    def afficher(self):
+        pass</code></pre>
+
+<h3>3.2. Classe Fichier</h3>
+
+<pre><code>class Fichier(Element):
+    def __init__(self, nom):
+        self.nom = nom
+
+    def afficher(self):
+        print("Fichier :", self.nom)</code></pre>
+
+<h3>3.3. Classe Dossier</h3>
+
+<pre><code>class Dossier(Element):
+    def __init__(self, nom):
+        self.nom = nom
+        self.contenu = []
+
+    def ajouter(self, element):
+        self.contenu.append(element)
+
+    def afficher(self):
+        print("Dossier :", self.nom)
+
+        for element in self.contenu:
+            element.afficher()</code></pre>
+
+<h3>3.4. Construction de l'arborescence</h3>
+
+<pre><code>cours = Fichier("cours.pdf")
+programme = Fichier("programme.py")
+
+arbre = Fichier("arbre.png")
+graphe = Fichier("graphe.png")
+
+images = Dossier("Images")
+images.ajouter(arbre)
+images.ajouter(graphe)
+
+nsi = Dossier("NSI")
+nsi.ajouter(cours)
+nsi.ajouter(programme)
+nsi.ajouter(images)
+
+nsi.afficher()</code></pre>
+
+<p>Affichage obtenu :</p>
+
+<div class="output">Dossier : NSI
+Fichier : cours.pdf
+Fichier : programme.py
+Dossier : Images
+Fichier : arbre.png
+Fichier : graphe.png</div>
+
+<h3>3.5. Explication du polymorphisme</h3>
+
+<p>Dans la boucle :</p>
+
+<pre><code>for element in self.contenu:
+    element.afficher()</code></pre>
+
+<p>la variable <code>element</code> peut désigner un objet de la classe <code>Fichier</code> ou de la classe <code>Dossier</code>.</p>
+
+<p>Python appelle automatiquement la méthode <code>afficher()</code> correspondant à la classe réelle de l'objet. Il s'agit de <strong>polymorphisme</strong>.</p>
+
+<p>Le pattern Composite fonctionne précisément grâce à cette idée : un fichier et un dossier sont tous les deux considérés comme des <code>Element</code>.</p>
+
+<h3>3.6. Remarque sur la récursivité</h3>
+
+<p>Si un dossier contient un autre dossier, l'appel :</p>
+
+<pre><code>element.afficher()</code></pre>
+
+<p>peut déclencher à son tour une nouvelle boucle sur le contenu de ce sous-dossier. La structure est donc naturellement récursive.</p>
+
+</div>
+
+<footer>Spécialité NSI — Terminale — Héritage, polymorphisme et structures récursives</footer>
+</body>
+</html>
