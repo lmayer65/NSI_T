@@ -1,0 +1,14 @@
+{ "Zombie" : 
+	{
+	"Attack" : 10,
+	"Block" : 0.05,
+	"Defense" : 20,
+	"Dodge" : 0.05,
+	"HitPoints" : 20,
+	"Init_x" : 1200,
+	"Init_y" : 110,
+	"Name" : "Zombie",
+	"Parry" : 0.10,
+	"Speed" : 2
+	}
+}
